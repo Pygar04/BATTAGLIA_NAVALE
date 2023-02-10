@@ -16,9 +16,9 @@ void stampa(char mappa[][N], int N); // stampa la mappa
 void stampa2(char mappa1[N],char mappa2[][N], int N); // stampa le due mappe
 void piazzaNav(char mappa[][N], int N); // funzione per piazzare le navi nella mappa
 void casualNav(char mappa[][N], int N); // funzione per piazzare le navi nella mappa in modo casuale
-bool affondato(char mappa[][N], int N); // funzione che controll se le nave è stata affondata
-int turno();
+bool affondato(char map[][N], int x, int y, int N); // funzione che controll se le nave è stata affondata
 void regole();
+int cercaNave(char map[][N], int N, int x, int y);
 //Amodeo
 void cerca(char M[][N], int N);
 void semplice();
@@ -26,7 +26,7 @@ void semplice();
 //main
 int main()
 {
-    cout<<"qui";
+    cout<<"";
     
     menu1(); 
     
@@ -105,7 +105,6 @@ void menu2()
     }
 }
 
-
 void inizMappa(char mappa[][N], int N)
 {
     for(int i=0; i < N; i++){
@@ -119,7 +118,7 @@ void inizMappa(char mappa[][N], int N)
 void stampa(char mappa[][N], int N)
 {
     system("cls");
-    cout<<"_______Mappa_______"<<endl;
+    cout<<"_______Mappa_______"<<endl<<endl;
     cout<<"0.1.2.3.4.5.6.7.8.9."<<endl;
     for(int i=0; i < N; i++)
     {
@@ -154,9 +153,9 @@ void piazzaNav(char mappa[][N], int N)
         {
             cout<<"\nInserisci la posizione della nave da "<<nav<<" (x y (da 0 a 9), orizzontale (0), verticale(1)): ";
             cin>>x>>y>>direzione;
-            if(x>9 || x <0 || y>9 || y<0 || direzione==0 && direzione == 1 )
+            if(x>9 || x <0 || y>9 || y<0 || direzione == 0 && direzione == 1 )
                 cout<<"\nLe inforazioni non sono corrette....... Prego insrire di nuovo i dati corretamente......";
-        }while(x<0 || x >9 || y<0 || y>9 || direzione!=0 && direzione != 1 );
+        }while(x<0 || x >9 || y<0 || y>9 || direzione !=0 && direzione != 1 );
         while (validaPos (mappa,x, y, direzione, nav)) 
         {
             do
@@ -216,44 +215,120 @@ void casualNav(char mappa[][N], int N)
 
 bool validaPos(char mappa[][N],int x, int y, int direzione, int nav)
 {
-    for (int i=0; i < nav; i++) 
-    {
-        if (direzione == 0) 
-            if (x+i >= N || mappa[x][y+i] !='.') //orizzontale
-                return true;
-        else 
-            if (y+i >= N || mappa[x+i][y] !='.') // verticale
-                return true;
+     // Verifica che la nave non esca fuori dalla mappa
+    if (direzione == 0) 
+    { 
+        if (x + nav > N-1) //Orizzontale
+            return true;
+    } 
+    else
+    {  
+        if (y + nav > N-1) // Verticale
+            return true;
     }
-    return false;
+
+  // Verifica che la nave non si sovrapponga ad altre navi
+  for (int i = 0; i < nav; i++) 
+  {
+    int r, c;
+    if (direzione == 0) // Orizzontale
+    {
+      r = x;
+      c = y + i;
+    } else  // Verticale
+    {
+      r = x + i;
+      c = y;
+    }
+
+    if (mappa[r][c] == '*') 
+      return true;
+
+  }
+
+  // Verifica che la nave non sia attaccata ad altre navi
+  for (int i = -1; i <= nav; i++) 
+  {
+    for (int j = -1; j <= 1; j++) 
+    {
+      int r, c;
+      if (direzione == 0) 
+      {  // Orizzontale
+        r = x + j;
+        c = y + i;
+      } 
+      else 
+      {  // Verticale
+        r = x + i;
+        c = y + j;
+      }
+
+      if (r >= 0 && r < N && c >= 0 && c < N && mappa[r][c] == '*') 
+        return true;
+    }
+  }
+
+  return false;
 }
 
 void attacco(char mappa1[][N],char mappa2[][N],int x, int y) 
 {
-    if(mappa1[x][y] == '*') 
+    if(mappa1[x][y] == '*') //mappa avversario
     {
         cout<<"Colpito!"<<endl;
         mappa2[x][y]='X';
+        mappa1[x][y]='X';
     } 
     else
         {
             cout<<"Mancato."<<endl;
             mappa2[x][y]='O';
+            mappa1[x][y]='O';
         }
     }
 
-bool affondato(char mappa[][N], int N)
+bool controlloAtt(char mappa[][N], int x, int y)
 {
-    int shipCells = 0;
-    for (int i = 0; i < N; i++) 
+    if(mappa[x][y] == 'X')
     {
-        for (int j = 0; j < N; j++) 
-        {
-            if (mappa[i][j] == 'X') 
-                shipCells++;
-        }
+        cout<<" Hai gia colpito in questo punto"<<endl;
+        return true;
     }
-    return (shipCells == 0);
+    else if(mappa[x][y] == 'O')
+    {
+        cout<<" Hai gia colpito in questo punto"<<endl;
+        return true;
+    }
+    return false;
+}
+
+bool affondato(char map[][N], int x, int y, int N)
+{
+    int ship_length = cercaNave(map, N, x, y);
+  if (ship_length == 0) {
+    return false;
+  }
+  int sunk_count = 0;
+  int row = x;
+  int col = y;
+  while (col < N && map[row][col] == '*') 
+  {
+    if (map[row][col] == 'X') 
+      sunk_count++;
+    col++;
+  }
+  if (sunk_count == ship_length)
+    return true;
+  sunk_count = 0;
+  row = x;
+  col = y;
+  while (row < N && map[row][col] == '*') 
+  {
+    if (map[row][col] == 'X') 
+      sunk_count++;
+    row++;
+  }
+  return sunk_count == ship_length;
 }
 
 //cpu
@@ -261,8 +336,6 @@ void cpu(char difesa1[N][N], char attacco1[N][N], char difesa2[N][N], char attac
 {
     //inizializza mappa del computer in modo casuale
     srand(time(0));
-    int x, y, direzione,nav;
-    int navi[10]={4, 3, 3, 3, 2, 2, 2, 1, 1, 1};
     inizMappa(difesa1, N);
     inizMappa(attacco1, N);
     inizMappa(difesa2, N);
@@ -295,6 +368,54 @@ void cpu(char difesa1[N][N], char attacco1[N][N], char difesa2[N][N], char attac
         }
     
     }
+
+    int nGiocatore1=10, nGiocatore2=10, x, y;
+    bool turno=true;
+    do
+    {
+        if (turno) 
+        {
+            system("cls");
+            cout<< "E' il tuo turno" <<endl<<endl;
+            stampa2(difesa1,attacco1, N);
+            do{
+                do
+                {
+                    cout<<"Inserisci le coordinate per attaccare (x e y (da 0, 9)): "<<endl;
+                    cin>>x>>y;
+                    if(x>9 || x <0 || y>9 || y<0)
+                        cout<<"\nLe coordinate non sono corrette....... Prego inserire di nuovo i dati corretamente......";
+                }while(x<0 || x >9 || y<0 || y>9); // controllo input
+            }while(controlloAtt(attacco1, x, y));
+            attacco(difesa2,attacco1,x,y);
+            if(affondato(difesa2,x , y, N))
+                nGiocatore2--;
+
+            turno=false;
+        } 
+        else 
+        {
+            system("cls");
+            cout<<"Turno del computer"<<endl<<endl;
+            do
+            {
+                    x=rand()%N;
+                    y=rand()%N;
+
+            }while(controlloAtt(attacco2, x, y));
+            attacco(difesa1,attacco2,x,y);
+            if(affondato(difesa1,x,y, N))
+                nGiocatore1--;
+            turno=true;
+        }  
+    } while (nGiocatore1 > 0 && nGiocatore2 > 0);
+     if (nGiocatore1 > 0) 
+        cout<<"Hai vinto!"<<endl;
+    else  
+        if (nGiocatore2 > 0) 
+            cout<<"Il computer ha vinto!"<<endl;
+        else 
+            cout<<"La partita e' terminata in pareggio."<<endl;        
 }
 
 // 2 giocatori
@@ -372,9 +493,9 @@ void difficile(char difesa1[][N], char attacco1[][N], char difesa2[][N], char at
                 cin>>x>>y;
                 if(x>9 || x <0 || y>9 || y<0)
                     cout<<"\nLe coordinate non sono corrette....... Prego insrire di nuovo i dati corretamente......";
-            }while(x<0 || x >9 || y<0 || y>9);
+            }while(x<0 || x >9 || y<0 || y>9); // controllo input
             attacco(difesa2,attacco1,x,y);
-            if(affondato(difesa2, N))
+            if(affondato(difesa2,x, y, N))
                 nGiocatore2--;
 
             turno = false;
@@ -390,9 +511,9 @@ void difficile(char difesa1[][N], char attacco1[][N], char difesa2[][N], char at
                 cin>>x>>y;
                 if(x>9 || x <0 || y>9 || y<0)
                     cout<<"\nLe coordinate non sono corrette....... Prego inserire di nuovo i dati corretamente......";
-            }while(x<0 || x >9 || y<0 || y>9);
+            }while(x<0 || x >9 || y<0 || y>9); // controllo input
             attacco(difesa1,attacco2,x,y);
-            if(affondato(difesa1, N))
+            if(affondato(difesa1,x,y, N))
                 nGiocatore1--;
             turno = true;
         }  
@@ -406,6 +527,55 @@ void difficile(char difesa1[][N], char attacco1[][N], char difesa2[][N], char at
         else 
             cout<<"La partita e' terminata in pareggio."<<endl;        
 }
+
+
+
+
+
+
+
+int cercaNave(char map[][N], int N, int x, int y) 
+{
+  if (map[x][y] != '*')
+    return 0;
+  int row = x;
+  int col = y;
+  int length = 0;
+  while (col < N && map[row][col] == '*') 
+  {
+    length++;
+    col++;
+  }
+  if (length > 1) 
+  {
+    // La nave è disposta orizzontalmente
+    for (int c = y; c < y + length; c++) 
+    {
+      if (map[x][c] != '*')
+        return 0;
+    }
+    return length;
+  }
+  length = 0;
+  while (row < N && map[row][col] == '*') 
+  {
+    length++;
+    row++;
+  }
+  if (length <= 1)
+    return 0;
+  // La nave è disposta verticalmente
+  for (int r = x; r < x + length; r++) 
+  {
+    if (map[r][y] != '*')
+      return 0;
+  }
+  return length;
+}
+
+
+
+
 
 
 
@@ -427,7 +597,7 @@ void difficile(char difesa1[][N], char attacco1[][N], char difesa2[][N], char at
 void semplice()
 {
     char M[][N]={
-        {'*','.','.','.','.','.','.','.','*','.'},
+        {'*','.','.','*','*','*','*','.','*','.'},
         {'.','.','.','.','.','.','.','.','.','.'},
         {'.','.','.','*','.','.','.','.','.','*'},
         {'.','.','.','.','.','.','.','.','.','*'},
@@ -436,7 +606,7 @@ void semplice()
         {'.','*','.','.','*','.','.','*','.','*'},
         {'.','.','.','.','.','.','.','*','.','.'},
         {'.','.','.','.','.','.','.','.','.','*'},
-        {'.','.','.','*','*','*','*','.','.','*'},
+        {'.','.','.','*','*','.','.','.','.','*'},
     };
     stampa(M,N);       
     cerca(M, N);
@@ -446,37 +616,33 @@ void cerca(char M[][N], int N)
 {
     int r, c, r2, c2;
     int numero=0;
-    for(int i=0; i < N; i++){
+    for(int i=0; i < N; i++)
+    {
         numero=0;
         for(int j=0; j < N; j++)
         {
             
             if(M[i][j]=='*')
-            {
                 numero++;
-               
-            }
-            if(numero==1)
+            if(numero == 1)
             {
                 r=i;
                 c=j;
             }
-            if(numero==4)
+            if(numero == 4)
             {
                 r2=i;
                 c2=j;
                 i=N;
                 j=N;
             }
-            if(M[i][j]=='.')
-            {
+            if(M[i][j] == '.')
                 numero=0;
-            }
-            cout<<endl;
+
         }
     }
        
-    if(numero==4)
+    if(numero == 4)
         cout<<"\nLa nave da 4 caselle inizia dalla cordinata : ["<<r<<"],["<<c<<"].... e finisce a : ["<<r2<<"],["<<c2<<"]";
     else
         cout<<"\nNon e' stata trovata nessuna nave lunga 4 caselle in orizzontale\n"; 
@@ -488,24 +654,25 @@ void cerca(char M[][N], int N)
         {
             if(M[j][i]=='*')
                 numero++;
-            if(numero==1)
+            
+            if(numero == 1)
             {
                 r=j;
                 c=i;
             }
-            if(numero==4)
+            if(numero == 4)
             {
                 r2=j;
                 c2=i;
                 i=N;
                 j=N;
             }
-            if(M[j][i]=='.')
+            if(M[j][i] == '.')
                 numero=0;
         }
     }
         
-    if(numero==4)
+    if(numero == 4)
         cout<<"\nLa nave da 4 caselle inizia dalla cordinata : ["<<r<<"],["<<c<<"].... e finisce a : ["<<r2<<"],["<<c2<<"]\n";
     else
         cout<<"\nNon e' stata trovata nessuna nave lunga 4 caselle in verticale\n";
