@@ -125,11 +125,12 @@ void stampa(char mappa[][N], int N)
 {
     system("cls");
     cout<<"       Mappa       "<<endl<<endl;
-    cout<<"0.1.2.3.4.5.6.7.8.9."<<endl;
+    cout<<"  0 1 2 3 4 5 6 7 8 9"<<endl;
     for(int i=0; i < N; i++)
     {
+        cout<<i<<" ";
         for(int j=0; j < N; j++)
-            cout<<mappa[i][j]<<"|";
+            cout<<mappa[i][j]<<" ";
         cout<<endl;
     }
 }
@@ -137,13 +138,16 @@ void stampa(char mappa[][N], int N)
 void stampa2(char mappa1[][N],char mappa2[][N], int N)
 {
     cout<<"       difesa       "<<setw(10)<<" "<<"       attacco       "<<endl<<endl;
+    cout<<"  0 1 2 3 4 5 6 7 8 9"<<setw(10)<<" "<<"  0 1 2 3 4 5 6 7 8 9"<<endl;
     for (int i=0; i < N; i++) 
     {
+        cout<<i<<" ";
         for (int j=0; j < N; j++) 
-            cout<<mappa1[i][j]<<"|";
+            cout<<mappa1[i][j]<<" ";
         cout<<setw(10)<<" ";
+        cout<<i<<" ";
         for (int j=0; j < N; j++) 
-            cout<<mappa2[i][j]<<"|";
+            cout<<mappa2[i][j]<<" ";
         cout<<endl;
     }
 }
