@@ -221,12 +221,12 @@ bool validaPos(char mappa[][N],int x, int y, int direzione, int nav)
     // Verifica che la nave non esca fuori dalla mappa
     if (direzione == 0) 
     { 
-        if (y + nav > N-1) //Orizzontale
+        if (y + nav > N) //Orizzontale
             return true;
     } 
     else
     {  
-        if (x + nav > N-1) // Verticale
+        if (x + nav > N) // Verticale
             return true;
     }
 
