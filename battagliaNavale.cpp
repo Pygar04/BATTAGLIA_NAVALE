@@ -33,7 +33,6 @@ void semplice();
 int main()
 {
     logo();
-
     system("pause");
     menu1(); 
     
@@ -338,8 +337,8 @@ string affondato(char mappa[][N],int giocatore) //int giocatore=0 / 1
         }
     if(naveAffondata==true)
     {
+        giocatori[giocatore]=giocatori[giocatore]-1;
         return "\naffondata!\n";
-        giocatori[giocatore]--;
     }
     return "\ncolpita!\n";
 }
@@ -440,6 +439,7 @@ void cpu(char difesa1[N][N], char attacco1[N][N], char difesa2[N][N], char attac
                 }while(x < 0 || x > 9 || y < 0 || y > 9); // controllo input
             }while(controlloAtt(attacco1, x, y));
             attacco(difesa2,attacco1,x,y, 1);
+            cout<<giocatori[1];
             Sleep(500);
             turno=false;
         } 
@@ -454,13 +454,14 @@ void cpu(char difesa1[N][N], char attacco1[N][N], char difesa2[N][N], char attac
 
             }while(controlloAtt(attacco2, x, y));
             attacco(difesa1,attacco2,x,y, 0);
+            cout<<giocatori[0];
             turno=true;
         }  
-    } while (giocatori[0] > 0 || giocatori[1] > 0); // Continua il ciclo finché entrambi i giocatori hanno ancora navi
-     if (giocatori[0] > 0) 
+    } while (giocatori[0] >= 0 || giocatori[1] >= 0); // Continua il ciclo finché entrambi i giocatori hanno ancora navi
+     if (giocatori[0] >= 0) 
         cout<<"Hai vinto!"<<endl;
-    else  if (giocatori[1] > 0)
-            cout<<"Il computer ha vinto!"<<endl;     
+    else  if (giocatori[1] >= 0)
+                cout<<"Il computer ha vinto!"<<endl;     
 }
 
 // 2 giocatori
