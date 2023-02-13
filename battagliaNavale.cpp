@@ -1,4 +1,4 @@
-#include <iostream>
+ #include <iostream>
 #include <cstdlib>
 #include <ctime>
 #include <iomanip>
@@ -6,7 +6,7 @@
 using namespace std;
 const int N=10; //grandezza mappa
 int contlAff[4];
-int giocatori[2]={10,10}; //0->giocatore1 1->giocatore2
+int giocatori[2];
 
 //prototipi
 void menu1(); //Amodeo
@@ -188,6 +188,7 @@ void piazzaNav(char mappa[][N], int N)
 
 void casualNav(char mappa[][N], int N)
 {
+    srand(time(NULL));
     int x, y, direzione,nav;
     int navi[10]={4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
     for(int i=0; i < N; i++)
@@ -383,8 +384,9 @@ bool controlloAtt(char mappa[][N], int x, int y)
 //cpu
 void cpu(char difesa1[N][N], char attacco1[N][N], char difesa2[N][N], char attacco2[N][N], int N)
 {
-    //inizializza mappa del computer in modo casuale
-    srand(time(0));
+    giocatori[0]=10; //giocatore 1
+    giocatori[1]=10; //giocatore 2
+    srand(time(NULL));
     inizMappa(difesa1, N);
     inizMappa(attacco1, N);
     inizMappa(difesa2, N);
@@ -395,7 +397,7 @@ void cpu(char difesa1[N][N], char attacco1[N][N], char difesa2[N][N], char attac
     bool esci=false;
     while (!esci) 
     {
-        cout<<"1. Piazzamento navi:"<<endl;
+        cout<<"Piazzamento navi:"<<endl;
         cout<<"1. manuale"<<endl;
         cout<<"2. casuale"<<endl;
         cout<<"Inserisci il numero della tua scelta: ";
@@ -439,7 +441,7 @@ void cpu(char difesa1[N][N], char attacco1[N][N], char difesa2[N][N], char attac
                 }while(x < 0 || x > 9 || y < 0 || y > 9); // controllo input
             }while(controlloAtt(attacco1, x, y));
             attacco(difesa2,attacco1,x,y, 1);
-            Sleep(50);
+            Sleep(500);
             turno=false;
         } 
         else 
@@ -455,17 +457,21 @@ void cpu(char difesa1[N][N], char attacco1[N][N], char difesa2[N][N], char attac
             attacco(difesa1,attacco2,x,y, 0);
             turno=true;
         }  
-    } while (giocatori[0] >= 0 || giocatori[1] >= 0); // Continua il ciclo finché entrambi i giocatori hanno ancora navi
-     if (giocatori[0] >= 0) 
+    } while (giocatori[0] > 0 && giocatori[1] > 0); // Continua il ciclo finché entrambi i giocatori hanno ancora navi
+    system("cls");
+    if (giocatori[0] > 0) 
         cout<<"Hai vinto!"<<endl;
-    else  if (giocatori[1] >= 0)
-                cout<<"Il computer ha vinto!"<<endl;     
+    else  if (giocatori[1] > 0)
+                cout<<"Hai perso!"<<endl;
+    system("pause");     
 }
 
 // 2 giocatori
 void difficile(char difesa1[][N], char attacco1[][N], char difesa2[][N], char attacco2[][N], int N)
 {
-    system("cls");  
+    system("cls");
+    giocatori[0]=10; //giocatore 1
+    giocatori[1]=10; //giocatore 2
     int scelta;
     bool esci=false;
     inizMappa(difesa1, N);
@@ -556,15 +562,15 @@ void difficile(char difesa1[][N], char attacco1[][N], char difesa2[][N], char at
             }while(x<0 || x >9 || y<0 || y>9); // controllo input
             attacco(difesa1,attacco2,x,y, 0);
             Sleep(1000);
-            
             turno=true;
         }  
     } while (giocatori[0] > 0 || giocatori[1] > 0); // Continua il ciclo finché entrambi i giocatori hanno ancora navi
-
+    system("cls");
     if (giocatori[0] > 0) 
         cout<<"Il giocatore 1 ha vinto!"<<endl;
     else  if (giocatori[1] > 0) 
         cout<<"Il giocatore 2 ha vinto!"<<endl;    
+    system("pause");
 }
 
 //Amodeo
