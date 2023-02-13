@@ -1,12 +1,12 @@
- #include <iostream>
+#include <iostream>
 #include <cstdlib>
 #include <ctime>
 #include <iomanip>
 #include <windows.h>
 using namespace std;
-const int N=10;//grandezza mappa
+const int N=10; //grandezza mappa
 int contlAff[4];
-int giocatori[2]={10,10};
+int giocatori[2]={10,10}; //0->giocatore1 1->giocatore2
 
 //prototipi
 void menu1(); //Amodeo
@@ -439,8 +439,7 @@ void cpu(char difesa1[N][N], char attacco1[N][N], char difesa2[N][N], char attac
                 }while(x < 0 || x > 9 || y < 0 || y > 9); // controllo input
             }while(controlloAtt(attacco1, x, y));
             attacco(difesa2,attacco1,x,y, 1);
-            cout<<giocatori[1];
-            Sleep(500);
+            Sleep(50);
             turno=false;
         } 
         else 
@@ -454,7 +453,6 @@ void cpu(char difesa1[N][N], char attacco1[N][N], char difesa2[N][N], char attac
 
             }while(controlloAtt(attacco2, x, y));
             attacco(difesa1,attacco2,x,y, 0);
-            cout<<giocatori[0];
             turno=true;
         }  
     } while (giocatori[0] >= 0 || giocatori[1] >= 0); // Continua il ciclo finché entrambi i giocatori hanno ancora navi
