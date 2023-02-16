@@ -201,6 +201,7 @@ void stampa(char mappa[][N], int N)
             cout<<mappa[i][j]<<" ";
         cout<<endl;
     }
+    cout<<endl<<endl;
 }
 
 void stampa2(char mappa1[][N],char mappa2[][N], int giocatore)
@@ -208,7 +209,7 @@ void stampa2(char mappa1[][N],char mappa2[][N], int giocatore)
     cout<<setw(padding)<<" ";
     cout<<"       DIFESA       "<<setw(10)<<" "<<"         ATTACCO       "<<endl<<endl;
     cout<<setw(padding)<<" ";
-    cout<<"  0 1 2 3 4 5 6 7 8 9"<<setw(10)<<" "<<"  0 1 2 3 4 5 6 7 8 9"<<setw(10)<<" "<<"Navi avversario: "<<giocatori[giocatore]<<endl;
+    cout<<"  0 1 2 3 4 5 6 7 8 9"<<setw(11)<<" "<<"  0 1 2 3 4 5 6 7 8 9"<<setw(11)<<" "<<"Navi avversario: "<<giocatori[giocatore]<<endl;
     for (int i=0; i < N; i++) 
     {
         cout<<setw(padding)<<" ";
@@ -222,6 +223,7 @@ void stampa2(char mappa1[][N],char mappa2[][N], int giocatore)
 
         cout<<endl;
     }
+    cout<<endl<<endl;
 }
 
 void piazzaNav(char mappa[][N], int N)
@@ -836,6 +838,7 @@ void cerca(char M[][N], int N)
 /*
 void logo()
 {
+    system("clear");
     cout<<R"(
                                                            *_______          ____     _______     * _______          ____         ______       _______           ____          ____                                      
                                                            |  _____\        |  ___\   | ______\     | ______\       |  ___\      /  ____\  *  |   ____\         | ___\     *  |  ___\
@@ -906,6 +909,7 @@ void regole()
 
 void logo()
 {
+    system("clear");
     cout<<setw(padding)<<" ";
     cout<<"██████╗  █████╗ ████████╗████████╗ █████╗  ██████╗ ██╗     ██╗ █████╗ "<<endl;
     cout<<setw(padding)<<" ";
