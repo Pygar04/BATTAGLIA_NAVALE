@@ -9,17 +9,18 @@ using namespace std;
 
 const int N=10; //grandezza mappa
 int contlAff[4];
-int giocatori[2];
+int giocatori[2]; //numero giocati
 
-//funzione per centare scritte 
+//funzione per centrare scritte 
 ////////////////////////////////////////////////////
-int get_console_width() {                         // 
+int get_console_width()                           //
+{                                                 // 
     struct winsize w;                             //
     ioctl(0, TIOCGWINSZ, &w);                     //
     return w.ws_col;                              //
 }                                                 //
 int screen_width = get_console_width();           //   
-int string_width = 34;                            //
+int string_width = 70;                            //
 int padding = (screen_width - string_width) / 2;  //
 ////////////////////////////////////////////////////
 
@@ -31,10 +32,10 @@ void cpu(char difesa1[][N], char attacco1[][N], char difesa2[][N], char attacco2
 bool validaPos(char mappa[][N], int x, int y, int direzione, int nav);//funzione per validare la posizioni delle navi per non piazzarle accanto 
 void inizMappa(char mappa[][N], int N); // inizializza le mappa di gioco
 void stampa(char mappa[][N], int N); // stampa la mappa
-void stampa2(char mappa1[N], char mappa2[][N], int N); // stampa le due mappe
+void stampa2(char mappa1[N], char mappa2[][N], int giocatore); // stampa le due mappe
 void piazzaNav(char mappa[][N], int N); // funzione per piazzare le navi nella mappa
 void casualNav(char mappa[][N], int N); // funzione per piazzare le navi nella mappa in modo casuale
-void attacco(char mappa1[][N],char mappa2[][N],int x, int y, int giocatore);
+void attacco(char mappa1[][N],char mappa2[][N],int x, int y, int giocatore); //funzione per attaccare le navi
 void checkNave(char mappa[][N], int x, int y); // funzione che controll se le nave è stata affondata
 string affondato(char mappa, int giocatore);// funzione per controllare se una nave è affondata
 void logo(); // Battaglia Navale
@@ -142,11 +143,11 @@ void menu2()
         cout<<"██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝"<<endl;
         cout<<setw(padding)<<" ";
         cout<<"╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ "<<endl<<endl<<endl;;
-        cout << setw(padding) << " ";
+        cout << setw(padding) <<" ";
         cout<<"Scegli la modalita': "<<endl;
         cout<<setw(padding)<<" ";
         cout<<"1. 2 giocatori"<<endl;
-        cout << setw(padding) << " ";
+        cout << setw(padding)<<" ";
         cout<<"2. CPU"<<endl;
         cout << setw(padding) << " ";
         cout<<"3. Esci"<<endl;
@@ -157,14 +158,14 @@ void menu2()
         switch (scelta)
         {
             case 1:
-                difficile(difesa1, attacco1, difesa2 , attacco2, N);
+                difficile(difesa1, attacco1, difesa2, attacco2, N);
                 break;
             case 2:
-                cpu(difesa1, attacco1, difesa2 , attacco2, N);
+                cpu(difesa1, attacco1, difesa2, attacco2, N);
                 break;
             case 3:
                 cout<<setw(padding)<<" ";
-                cout<<"Arrivederci!" << endl;
+                cout<<"Arrivederci!"<<endl;
                 esci=true;
                 break;
             default:
@@ -202,12 +203,12 @@ void stampa(char mappa[][N], int N)
     }
 }
 
-void stampa2(char mappa1[][N],char mappa2[][N], int N)
+void stampa2(char mappa1[][N],char mappa2[][N], int giocatore)
 {
     cout<<setw(padding)<<" ";
     cout<<"       DIFESA       "<<setw(10)<<" "<<"         ATTACCO       "<<endl<<endl;
     cout<<setw(padding)<<" ";
-    cout<<"  0 1 2 3 4 5 6 7 8 9"<<setw(10)<<" "<<"  0 1 2 3 4 5 6 7 8 9"<<endl;
+    cout<<"  0 1 2 3 4 5 6 7 8 9"<<setw(10)<<" "<<"  0 1 2 3 4 5 6 7 8 9"<<setw(10)<<" "<<"Navi avversario: "<<giocatori[giocatore]<<endl;
     for (int i=0; i < N; i++) 
     {
         cout<<setw(padding)<<" ";
@@ -425,10 +426,10 @@ string affondato(char mappa[][N],int giocatore) //int giocatore=0 / 1
     {
         giocatori[giocatore]=giocatori[giocatore]-1;
         cout<<setw(padding)<<" ";
-        return "\naffondata!\n";
+        return "affondata!\n";
     }
     cout<<setw(padding)<<" ";
-    return "\ncolpita!\n";
+    return "colpita!\n";
 }
 
 void attacco(char mappa1[][N],char mappa2[][N],int x, int y, int giocatore) 
@@ -526,7 +527,7 @@ void cpu(char difesa1[N][N], char attacco1[N][N], char difesa2[N][N], char attac
             system("clear");
             cout<<setw(padding)<<" ";
             cout<< "E' il tuo turno" <<endl<<endl;
-            stampa2(difesa1,attacco1, N);
+            stampa2(difesa1,attacco1, 1);
             do{
                 do
                 {
@@ -676,7 +677,7 @@ void difficile(char difesa1[][N], char attacco1[][N], char difesa2[][N], char at
             system("clear");
             cout<<setw(padding)<<" ";
             cout<< "Turno del giocatore 1" <<endl<<endl;
-            stampa2(difesa1,attacco1, N);
+            stampa2(difesa1,attacco1, 1);
             do
             {
                 cout<<setw(padding)<<" ";
@@ -697,7 +698,7 @@ void difficile(char difesa1[][N], char attacco1[][N], char difesa2[][N], char at
             system("clear");
             cout<<setw(padding)<<" ";
             cout<<"Turno del giocatore 2"<<endl<<endl;
-            stampa2(difesa2,attacco2, N);
+            stampa2(difesa2,attacco2, 0);
             do
             {
                 cout<<setw(padding)<<" ";
@@ -733,6 +734,7 @@ void difficile(char difesa1[][N], char attacco1[][N], char difesa2[][N], char at
 //Amodeo
 void semplice()
 {
+    system("clear");
     char M[][N]={
         {'*','.','.','*','*','*','*','.','*','.'},
         {'.','.','.','.','.','.','.','.','.','.'},
@@ -747,6 +749,11 @@ void semplice()
     };
     //stampa(M,N);       
     cerca(M, N);
+    cout<<endl<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"Premi INVIO per continuare...";
+    cin.ignore();
+    cin.get();
 }
 
 void cerca(char M[][N], int N)
@@ -780,9 +787,15 @@ void cerca(char M[][N], int N)
     }
        
     if(numero == 4)
-        cout<<"\nLa nave da 4 caselle inizia dalla cordinata : ["<<r<<"],["<<c<<"].... e finisce a : ["<<r2<<"],["<<c2<<"]";
+    {
+        cout<<setw(padding)<<" ";
+        cout<<"La nave da 4 caselle inizia dalla cordinata : ["<<r<<"],["<<c<<"].... e finisce a : ["<<r2<<"],["<<c2<<"]"<<endl;
+    }
     else
-        cout<<"\nNon e' stata trovata nessuna nave lunga 4 caselle in orizzontale\n"; 
+    {
+        cout<<setw(padding)<<" ";
+        cout<<"Non e' stata trovata nessuna nave lunga 4 caselle in orizzontale"<<endl;
+    } 
       
     for(int i=0; i < N; i++)
     {
@@ -810,11 +823,17 @@ void cerca(char M[][N], int N)
     }
         
     if(numero == 4)
-        cout<<"\nLa nave da 4 caselle inizia dalla cordinata : ["<<r<<"],["<<c<<"].... e finisce a : ["<<r2<<"],["<<c2<<"]\n";
+    {
+        cout<<setw(padding)<<" ";
+        cout<<"La nave da 4 caselle inizia dalla cordinata : ["<<r<<"],["<<c<<"].... e finisce a : ["<<r2<<"],["<<c2<<"]"<<endl;
+    }
     else
-        cout<<"\nNon e' stata trovata nessuna nave lunga 4 caselle in verticale\n";
+    {
+        cout<<setw(padding)<<" ";
+        cout<<"Non e' stata trovata nessuna nave lunga 4 caselle in verticale"<<endl;
+    }
 }
-
+/*
 void logo()
 {
     cout<<R"(
@@ -843,7 +862,7 @@ void logo()
     cout<<"Premi INVIO per continuare...";
     cin.get();
 }
-
+*/
 void regole()
 {
     system("clear");
@@ -882,5 +901,36 @@ void regole()
     cout << setw(padding) << " ";
     cout<<"Premi INVIO per continuare...";
     cin.ignore();
+    cin.get();
+}
+
+void logo()
+{
+    cout<<setw(padding)<<" ";
+    cout<<"██████╗  █████╗ ████████╗████████╗ █████╗  ██████╗ ██╗     ██╗ █████╗ "<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██╔══██╗██╔════╝ ██║     ██║██╔══██╗"<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"██████╔╝███████║   ██║      ██║   ███████║██║  ███╗██║     ██║███████║"<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"██╔══██╗██╔══██║   ██║      ██║   ██╔══██║██║   ██║██║     ██║██╔══██║"<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"██████╔╝██║  ██║   ██║      ██║   ██║  ██║╚██████╔╝███████╗██║██║  ██║"<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"╚═════╝ ╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═╝"<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"         ███╗   ██╗ █████╗ ██╗   ██╗ █████╗ ██╗     ███████╗          "<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"         ████╗  ██║██╔══██╗██║   ██║██╔══██╗██║     ██╔════╝          "<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"         ██╔██╗ ██║███████║██║   ██║███████║██║     █████╗            "<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"         ██║╚██╗██║██╔══██║╚██╗ ██╔╝██╔══██║██║     ██╔══╝            "<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"         ██║ ╚████║██║  ██║ ╚████╔╝ ██║  ██║███████╗███████╗          "<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"         ╚═╝  ╚═══╝╚═╝  ╚═╝  ╚═══╝  ╚═╝  ╚═╝╚══════╝╚══════╝          "<<endl<<endl<<endl;
+    cout << setw(padding) << " ";
+    cout<<"Premi INVIO per continuare...";
     cin.get();
 }
