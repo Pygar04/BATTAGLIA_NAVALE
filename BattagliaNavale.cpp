@@ -8,7 +8,7 @@
 using namespace std;
 
 const int N=10; //grandezza mappa
-int contlAff[4];
+int contlAff[4]; // vettore coordinate
 int giocatori[2]; //numero giocati
 
 //funzione per centrare scritte 
@@ -334,21 +334,21 @@ bool validaPos(char mappa[][N],int x, int y, int direzione, int nav)
     }
 
     // Verifica che la nave non sia attaccata ad altre navi
-    for (int i = -1; i <= nav; i++) 
+    for (int i = -1; i <= nav; i++)
     {
         for (int j = -1; j <= 1; j++) 
         {
-        int r, c;
-        if (direzione == 0) 
-        {  // Orizzontale
-            r=x + j;
-            c=y + i;
-        } 
-        else 
-        {  // Verticale
-            r=x + i;
-            c=y + j;
-        }
+            int r, c;
+            if (direzione == 0) 
+            {  // Orizzontale
+                r=x + j;
+                c=y + i;
+            } 
+            else 
+            {  // Verticale
+                r=x + i;
+                c=y + j;
+            }
 
         if (r >= 0 && r < N && c >= 0 && c < N && mappa[r][c] == '*') 
             return true;
@@ -424,7 +424,7 @@ string affondato(char mappa[][N],int giocatore) //int giocatore=0 / 1
                 }
             }
         }
-    if(naveAffondata==true)
+    if(naveAffondata == true)
     {
         giocatori[giocatore]=giocatori[giocatore]-1;
         cout<<setw(padding)<<" ";
@@ -442,10 +442,6 @@ void attacco(char mappa1[][N],char mappa2[][N],int x, int y, int giocatore)
         mappa2[x][y]='X';
         mappa1[x][y]='X';
         checkNave(mappa1, x, y);
-        //contrlAff = [0]-> xInizio [1]-> yInizio [2]-> xFine [3]-> yFine
-        /*for(int i=0;i<4;i++)
-            cout<<contlAff[i]<<" ";
-        */
         cout<<affondato(mappa1, giocatore);
     } 
     else
