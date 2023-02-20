@@ -726,6 +726,7 @@ void difficile(char difesa1[][N], char attacco1[][N], char difesa2[][N], char at
     }
     cout<<setw(padding)<<" ";    
     cout<<"\nPremi INVIO per continuare...";
+    cin.ignore();
     cin.get();
 }
 
