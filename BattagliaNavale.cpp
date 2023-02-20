@@ -50,7 +50,7 @@ int main()
     char scelta;
     logo();
     cout<<setw(padding)<<" ";
-    cout<<"Realizzato da Habili Ragip e Simnica Habili"<<endl;
+    cout<<"Realizzato da Habili Ragip e Simnica Ylli"<<endl;
     system("clear");   
     do
     {
@@ -529,12 +529,12 @@ void cpu(char difesa1[N][N], char attacco1[N][N], char difesa2[N][N], char attac
             do{
                 do
                 {
-                    x=rand()%10;
-                    y=rand()%10;
-                    //cout<<"\nInserisci le coordinate per attaccare (x e y (da 0, 9)): ";
-                    //cin>>x>>y;
-                    //if(x > 9 || x < 0 || y > 9 || y < 0)
-                    //    cout<<"\nLe coordinate non sono corrette....... Prego inserire di nuovo i dati corretamente......";
+                    //x=rand()%10;
+                    //y=rand()%10;
+                    cout<<"\nInserisci le coordinate per attaccare (x e y (da 0, 9)): ";
+                    cin>>x>>y;
+                    if(x > 9 || x < 0 || y > 9 || y < 0)
+                       cout<<"\nLe coordinate non sono corrette....... Prego inserire di nuovo i dati corretamente......";
                 }while(x < 0 || x > 9 || y < 0 || y > 9); // controllo input
             }while(controlloAtt(attacco1, x, y));
             attacco(difesa2,attacco1,x,y, 1);
@@ -730,6 +730,79 @@ void difficile(char difesa1[][N], char attacco1[][N], char difesa2[][N], char at
     cin.get();
 }
 
+void regole()
+{
+    system("clear");
+    cout<<setw(padding)<<" ";
+    cout<<"██████╗ ███████╗ ██████╗  ██████╗ ██╗     ███████╗"<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"██╔══██╗██╔════╝██╔════╝ ██╔═══██╗██║     ██╔════╝"<<endl;
+    cout<<setw(padding)<<" ";     
+    cout<<"██████╔╝█████╗  ██║  ███╗██║   ██║██║     █████╗  "<<endl;
+    cout<<setw(padding)<<" ";    
+    cout<<"██╔══██╗██╔══╝  ██║   ██║██║   ██║██║     ██╔══╝  "<<endl;
+    cout<<setw(padding)<<" ";   
+    cout<<"██║  ██║███████╗╚██████╔╝╚██████╔╝███████╗███████╗"<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝"<<endl<<endl<<endl;
+    cout << setw(padding) << " ";
+    cout<<"Al vostro turno, chiamate una lettera e un numero che identifica una riga e una"<<endl;
+    cout << setw(padding) << " ";
+    cout<<"colonna sulla griglia di destinazione. Il tuo avversario controlla lo spazio sulla sua"<<endl;
+    cout << setw(padding) << " ";
+    cout<<"griglia dell’oceano e risponde “manca” se non c’è la nave o “colpisce” se hai trovato"<<endl;
+    cout << setw(padding) << " ";
+    cout<<"uno spazio che conteneva una nave."<<endl<<endl;
+    cout << setw(padding) << " ";
+    cout<<"Segna ciascuna dei tuoi colpi sulla tua griglia superiore del bersaglio utilizzando i"<<endl;
+    cout << setw(padding) << " ";
+    cout<<"segnalini bianchi per le tue mancate e le punte rosse per i colpi andati a segno. In"<<endl;
+    cout << setw(padding) << " ";
+    cout<<"questo modo potrai tenere traccia dei tuoi colpi!"<<endl<<endl;
+    cout << setw(padding) << " ";
+    cout<<"Quando una delle tue navi viene colpita, si mette una punta rossa nel buco su quella"<<endl;
+    cout << setw(padding) << " ";
+    cout<<"nave sulla griglia oceano nella posizione del colpo. Le navi sono di diverse"<<endl;
+    cout << setw(padding) << " ";
+    cout<<"dimensioni e hanno diversi fori."<<endl<<endl;                                                                                             
+    cout << setw(padding) << " ";
+    cout<<"Premi INVIO per continuare...";
+    cin.ignore();
+    cin.get();
+}
+
+void logo()
+{
+    system("clear");
+    cout<<setw(padding)<<" ";
+    cout<<"██████╗  █████╗ ████████╗████████╗ █████╗  ██████╗ ██╗     ██╗ █████╗ "<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██╔══██╗██╔════╝ ██║     ██║██╔══██╗"<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"██████╔╝███████║   ██║      ██║   ███████║██║  ███╗██║     ██║███████║"<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"██╔══██╗██╔══██║   ██║      ██║   ██╔══██║██║   ██║██║     ██║██╔══██║"<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"██████╔╝██║  ██║   ██║      ██║   ██║  ██║╚██████╔╝███████╗██║██║  ██║"<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"╚═════╝ ╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═╝"<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"         ███╗   ██╗ █████╗ ██╗   ██╗ █████╗ ██╗     ███████╗          "<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"         ████╗  ██║██╔══██╗██║   ██║██╔══██╗██║     ██╔════╝          "<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"         ██╔██╗ ██║███████║██║   ██║███████║██║     █████╗            "<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"         ██║╚██╗██║██╔══██║╚██╗ ██╔╝██╔══██║██║     ██╔══╝            "<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"         ██║ ╚████║██║  ██║ ╚████╔╝ ██║  ██║███████╗███████╗          "<<endl;
+    cout<<setw(padding)<<" ";
+    cout<<"         ╚═╝  ╚═══╝╚═╝  ╚═╝  ╚═══╝  ╚═╝  ╚═╝╚══════╝╚══════╝          "<<endl<<endl<<endl;
+    cout << setw(padding) << " ";
+    cout<<"Premi INVIO per continuare...";
+    cin.get();
+}
+
 //Amodeo
 void semplice()
 {
@@ -863,75 +936,3 @@ void logo()
     cin.get();
 }
 */
-void regole()
-{
-    system("clear");
-    cout<<setw(padding)<<" ";
-    cout<<"██████╗ ███████╗ ██████╗  ██████╗ ██╗     ███████╗"<<endl;
-    cout<<setw(padding)<<" ";
-    cout<<"██╔══██╗██╔════╝██╔════╝ ██╔═══██╗██║     ██╔════╝"<<endl;
-    cout<<setw(padding)<<" ";     
-    cout<<"██████╔╝█████╗  ██║  ███╗██║   ██║██║     █████╗  "<<endl;
-    cout<<setw(padding)<<" ";    
-    cout<<"██╔══██╗██╔══╝  ██║   ██║██║   ██║██║     ██╔══╝  "<<endl;
-    cout<<setw(padding)<<" ";   
-    cout<<"██║  ██║███████╗╚██████╔╝╚██████╔╝███████╗███████╗"<<endl;
-    cout<<setw(padding)<<" ";
-    cout<<"╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝"<<endl<<endl<<endl;
-    cout << setw(padding) << " ";
-    cout<<"Al vostro turno, chiamate una lettera e un numero che identifica una riga e una"<<endl;
-    cout << setw(padding) << " ";
-    cout<<"colonna sulla griglia di destinazione. Il tuo avversario controlla lo spazio sulla sua"<<endl;
-    cout << setw(padding) << " ";
-    cout<<"griglia dell’oceano e risponde “manca” se non c’è la nave o “colpisce” se hai trovato"<<endl;
-    cout << setw(padding) << " ";
-    cout<<"uno spazio che conteneva una nave."<<endl<<endl;
-    cout << setw(padding) << " ";
-    cout<<"Segna ciascuna dei tuoi colpi sulla tua griglia superiore del bersaglio utilizzando i"<<endl;
-    cout << setw(padding) << " ";
-    cout<<"segnalini bianchi per le tue mancate e le punte rosse per i colpi andati a segno. In"<<endl;
-    cout << setw(padding) << " ";
-    cout<<"questo modo potrai tenere traccia dei tuoi colpi!"<<endl<<endl;
-    cout << setw(padding) << " ";
-    cout<<"Quando una delle tue navi viene colpita, si mette una punta rossa nel buco su quella"<<endl;
-    cout << setw(padding) << " ";
-    cout<<"nave sulla griglia oceano nella posizione del colpo. Le navi sono di diverse"<<endl;
-    cout << setw(padding) << " ";
-    cout<<"dimensioni e hanno diversi fori."<<endl<<endl;                                                                                             
-    cout << setw(padding) << " ";
-    cout<<"Premi INVIO per continuare...";
-    cin.ignore();
-    cin.get();
-}
-
-void logo()
-{
-    system("clear");
-    cout<<setw(padding)<<" ";
-    cout<<"██████╗  █████╗ ████████╗████████╗ █████╗  ██████╗ ██╗     ██╗ █████╗ "<<endl;
-    cout<<setw(padding)<<" ";
-    cout<<"██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██╔══██╗██╔════╝ ██║     ██║██╔══██╗"<<endl;
-    cout<<setw(padding)<<" ";
-    cout<<"██████╔╝███████║   ██║      ██║   ███████║██║  ███╗██║     ██║███████║"<<endl;
-    cout<<setw(padding)<<" ";
-    cout<<"██╔══██╗██╔══██║   ██║      ██║   ██╔══██║██║   ██║██║     ██║██╔══██║"<<endl;
-    cout<<setw(padding)<<" ";
-    cout<<"██████╔╝██║  ██║   ██║      ██║   ██║  ██║╚██████╔╝███████╗██║██║  ██║"<<endl;
-    cout<<setw(padding)<<" ";
-    cout<<"╚═════╝ ╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═╝"<<endl;
-    cout<<setw(padding)<<" ";
-    cout<<"         ███╗   ██╗ █████╗ ██╗   ██╗ █████╗ ██╗     ███████╗          "<<endl;
-    cout<<setw(padding)<<" ";
-    cout<<"         ████╗  ██║██╔══██╗██║   ██║██╔══██╗██║     ██╔════╝          "<<endl;
-    cout<<setw(padding)<<" ";
-    cout<<"         ██╔██╗ ██║███████║██║   ██║███████║██║     █████╗            "<<endl;
-    cout<<setw(padding)<<" ";
-    cout<<"         ██║╚██╗██║██╔══██║╚██╗ ██╔╝██╔══██║██║     ██╔══╝            "<<endl;
-    cout<<setw(padding)<<" ";
-    cout<<"         ██║ ╚████║██║  ██║ ╚████╔╝ ██║  ██║███████╗███████╗          "<<endl;
-    cout<<setw(padding)<<" ";
-    cout<<"         ╚═╝  ╚═══╝╚═╝  ╚═╝  ╚═══╝  ╚═╝  ╚═╝╚══════╝╚══════╝          "<<endl<<endl<<endl;
-    cout << setw(padding) << " ";
-    cout<<"Premi INVIO per continuare...";
-    cin.get();
-}
