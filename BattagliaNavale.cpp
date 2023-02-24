@@ -5,7 +5,9 @@
 #include <iomanip>
 #include <unistd.h>
 #include <sys/ioctl.h>
+#include "color.hpp"
 using namespace std;
+using namespace Color;
 
 const int N=10; //grandezza mappa
 int contlAff[4]; // vettore coordinate
@@ -78,7 +80,7 @@ void menu1()
     {
         system("clear");
         cout<<setw(padding)<<" ";
-        cout<<"███╗   ███╗███████╗███╗   ██╗██╗   ██╗"<<endl;
+        cout<<color(MAGENTA)<<"███╗   ███╗███████╗███╗   ██╗██╗   ██╗"<<endl;
         cout<<setw(padding)<<" ";
         cout<<"████╗ ████║██╔════╝████╗  ██║██║   ██║"<<endl;
         cout<<setw(padding)<<" ";
@@ -88,7 +90,7 @@ void menu1()
         cout<<setw(padding)<<" ";
         cout<<"██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝"<<endl;
         cout<<setw(padding)<<" ";
-        cout<<"╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ "<<endl<<endl<<endl;;
+        cout<<"╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ "<<color(DEFAULT)<<endl<<endl<<endl;;
         cout<<setw(padding)<<" ";
         cout<<"Scegli la modalita': "<<endl;
         cout<<setw(padding)<<" ";
@@ -132,7 +134,7 @@ void menu2()
     {
         system("clear");
         cout<<setw(padding)<<" ";
-        cout<<"███╗   ███╗███████╗███╗   ██╗██╗   ██╗"<<endl;
+        cout<<color(MAGENTA)<<"███╗   ███╗███████╗███╗   ██╗██╗   ██╗"<<endl;
         cout<<setw(padding)<<" ";
         cout<<"████╗ ████║██╔════╝████╗  ██║██║   ██║"<<endl;
         cout<<setw(padding)<<" ";
@@ -142,7 +144,7 @@ void menu2()
         cout<<setw(padding)<<" ";
         cout<<"██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝"<<endl;
         cout<<setw(padding)<<" ";
-        cout<<"╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ "<<endl<<endl<<endl;;
+        cout<<"╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ "<<color(DEFAULT)<<endl<<endl<<endl;;
         cout << setw(padding) <<" ";
         cout<<"Scegli la modalita': "<<endl;
         cout<<setw(padding)<<" ";
@@ -198,29 +200,64 @@ void stampa(char mappa[][N], int N)
         cout<<setw(padding)<<" ";
         cout<<i<<" ";
         for(int j=0; j < N; j++)
-            cout<<mappa[i][j]<<" ";
+           {
+                if(mappa[i][j] == '*') 
+                    cout<<color(GREEN)<<mappa[i][j]<<color(DEFAULT)<<" ";
+                else
+                    cout<<mappa[i][j]<<" "; 
+           }
         cout<<endl;
     }
     cout<<endl<<endl;
 }
 
-void stampa2(char mappa1[][N],char mappa2[][N], int giocatore)
+void stampa2(char mappa1[][N], char mappa2[][N], int giocatore)
 {
+    cout<<"\nLEGENDA:"<<endl<<endl;
+    cout<<"Nave: "<<color(GREEN)<<"*"<<color(DEFAULT)<<endl;
+    cout<<"Colpito: "<<color(RED)<<"X"<<color(DEFAULT)<<endl;
+    cout<<"Mancato: "<<color(BLUE)<<"O"<<color(DEFAULT)<<endl<<endl;
+    cout<<"Navi avversario: "<<giocatori[giocatore]<<endl;
+    if(giocatori[giocatore-1] <= 4)
+        cout<<"Le ture navi: "<<color(RED)<<giocatori[giocatore-1]<<color(DEFAULT)<<endl;
+    else
+        cout<<"Le tue navi: "<<giocatori[giocatore-1]<<endl;
     cout<<setw(padding)<<" ";
     cout<<"       DIFESA       "<<setw(10)<<" "<<"         ATTACCO       "<<endl<<endl;
-    cout<<setw(padding)<<" ";
-    cout<<"  0 1 2 3 4 5 6 7 8 9"<<setw(11)<<" "<<"  0 1 2 3 4 5 6 7 8 9"<<setw(11)<<" "<<"Navi avversario: "<<giocatori[giocatore]<<endl;
-    for (int i=0; i < N; i++) 
+    cout<<setw(padding)<< " ";
+    cout<<"  0 1 2 3 4 5 6 7 8 9"<<setw(11)<<" "<<"  0 1 2 3 4 5 6 7 8 9"<<endl;
+    for (int i=0; i < N; i++)
     {
         cout<<setw(padding)<<" ";
         cout<<i<<" ";
-        for (int j=0; j < N; j++)
-            cout<<mappa1[i][j]<<" ";
+        for (int j = 0; j < N; j++)
+        {
+            if (mappa1[i][j] == '*' || mappa1[i][j] == 'X' || mappa1[i][j] == 'O')
+            {
+                if (mappa1[i][j] == 'X')
+                    cout<<color(RED)<<mappa1[i][j]<<color(DEFAULT)<<" ";
+                else if (mappa1[i][j] == 'O')
+                    cout<<color(BLUE)<<mappa1[i][j]<<color(DEFAULT)<<" ";
+                else
+                    cout<<color(GREEN)<<mappa1[i][j]<<color(DEFAULT)<<" ";
+            }
+            else
+                cout<<mappa1[i][j]<<" ";
+        }
         cout<<setw(10)<<" ";
         cout<<i<<" ";
         for (int j=0; j < N; j++)
-            cout<<mappa2[i][j]<<" ";
-
+        {
+            if (mappa2[i][j] == 'X' || mappa2[i][j] == 'O')
+            {
+                if (mappa2[i][j] == 'X')
+                    cout<<color(RED)<<mappa2[i][j]<<color(DEFAULT)<<" ";
+                else
+                    cout<<color(BLUE)<<mappa2[i][j]<<color(DEFAULT)<<" ";
+            }
+            else
+                cout<<mappa2[i][j]<<" ";
+        }
         cout<<endl;
     }
     cout<<endl<<endl;
@@ -529,12 +566,12 @@ void cpu(char difesa1[N][N], char attacco1[N][N], char difesa2[N][N], char attac
             do{
                 do
                 {
-                    //x=rand()%10;
-                    //y=rand()%10;
-                    cout<<"\nInserisci le coordinate per attaccare (x e y (da 0, 9)): ";
-                    cin>>x>>y;
-                    if(x > 9 || x < 0 || y > 9 || y < 0)
-                       cout<<"\nLe coordinate non sono corrette....... Prego inserire di nuovo i dati corretamente......";
+                    x=rand()%10;
+                    y=rand()%10;
+                    //cout<<"\nInserisci le coordinate per attaccare (x e y (da 0, 9)): ";
+                    //cin>>x>>y;
+                    //if(x > 9 || x < 0 || y > 9 || y < 0)
+                    //   cout<<"\nLe coordinate non sono corrette....... Prego inserire di nuovo i dati corretamente......";
                 }while(x < 0 || x > 9 || y < 0 || y > 9); // controllo input
             }while(controlloAtt(attacco1, x, y));
             attacco(difesa2,attacco1,x,y, 1);
@@ -559,7 +596,7 @@ void cpu(char difesa1[N][N], char attacco1[N][N], char difesa2[N][N], char attac
     if (giocatori[0] > 0) 
     {
         cout<<setw(padding)<<" ";
-        cout<<"██╗  ██╗ █████╗ ██╗    ██╗   ██╗██╗███╗   ██╗████████╗ ██████╗ ██╗"<<endl;
+        cout<<color(YELLOW)<<"██╗  ██╗ █████╗ ██╗    ██╗   ██╗██╗███╗   ██╗████████╗ ██████╗ ██╗"<<endl;
         cout<<setw(padding)<<" ";  
         cout<<"██║  ██║██╔══██╗██║    ██║   ██║██║████╗  ██║╚══██╔══╝██╔═══██╗██║"<<endl;
         cout<<setw(padding)<<" ";  
@@ -569,12 +606,12 @@ void cpu(char difesa1[N][N], char attacco1[N][N], char difesa2[N][N], char attac
         cout<<setw(padding)<<" ";  
         cout<<"██║  ██║██║  ██║██║     ╚████╔╝ ██║██║ ╚████║   ██║   ╚██████╔╝██╗"<<endl;
         cout<<setw(padding)<<" ";  
-        cout<<"╚═╝  ╚═╝╚═╝  ╚═╝╚═╝      ╚═══╝  ╚═╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ╚═╝"<<endl<<endl<<endl;
+        cout<<"╚═╝  ╚═╝╚═╝  ╚═╝╚═╝      ╚═══╝  ╚═╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ╚═╝"<<color(DEFAULT)<<endl<<endl<<endl;
     }                                        
     else  if (giocatori[1] > 0)
     {
         cout<<setw(padding)<< " ";
-        cout<<"██╗  ██╗ █████╗ ██╗    ██████╗ ███████╗██████╗ ███████╗ ██████╗ ██╗"<<endl;
+        cout<<color(RED)<<"██╗  ██╗ █████╗ ██╗    ██████╗ ███████╗██████╗ ███████╗ ██████╗ ██╗"<<endl;
         cout<<setw(padding)<< " ";
         cout<<"██║  ██║██╔══██╗██║    ██╔══██╗██╔════╝██╔══██╗██╔════╝██╔═══██╗██║"<<endl;
         cout<<setw(padding)<< " ";
@@ -584,7 +621,7 @@ void cpu(char difesa1[N][N], char attacco1[N][N], char difesa2[N][N], char attac
         cout<<setw(padding)<< " ";
         cout<<"██║  ██║██║  ██║██║    ██║     ███████╗██║  ██║███████║╚██████╔╝██╗"<<endl;
         cout<<setw(padding)<< " ";
-        cout<<"╚═╝  ╚═╝╚═╝  ╚═╝╚═╝    ╚═╝     ╚══════╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝"<<endl<<endl<<endl;
+        cout<<"╚═╝  ╚═╝╚═╝  ╚═╝╚═╝    ╚═╝     ╚══════╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝"<<color(DEFAULT)<<endl<<endl<<endl;
     }
     cout<<setw(padding)<<" ";                                        
     cout<<"Premi INVIO per continuare...";
@@ -734,7 +771,7 @@ void regole()
 {
     system("clear");
     cout<<setw(padding)<<" ";
-    cout<<"██████╗ ███████╗ ██████╗  ██████╗ ██╗     ███████╗"<<endl;
+    cout<<color(DARK_GRAY)<<"██████╗ ███████╗ ██████╗  ██████╗ ██╗     ███████╗"<<endl;
     cout<<setw(padding)<<" ";
     cout<<"██╔══██╗██╔════╝██╔════╝ ██╔═══██╗██║     ██╔════╝"<<endl;
     cout<<setw(padding)<<" ";     
@@ -744,7 +781,7 @@ void regole()
     cout<<setw(padding)<<" ";   
     cout<<"██║  ██║███████╗╚██████╔╝╚██████╔╝███████╗███████╗"<<endl;
     cout<<setw(padding)<<" ";
-    cout<<"╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝"<<endl<<endl<<endl;
+    cout<<"╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝"<<color(DEFAULT)<<endl<<endl<<endl;
     cout << setw(padding) << " ";
     cout<<"Al vostro turno, chiamate una lettera e un numero che identifica una riga e una"<<endl;
     cout << setw(padding) << " ";
@@ -775,29 +812,29 @@ void logo()
 {
     system("clear");
     cout<<setw(padding)<<" ";
-    cout<<"██████╗  █████╗ ████████╗████████╗ █████╗  ██████╗ ██╗     ██╗ █████╗ "<<endl;
+    cout<<color(BLUE)<<"██████╗  █████╗ ████████╗████████╗ █████╗  ██████╗ ██╗     ██╗ █████╗ "<<endl;
     cout<<setw(padding)<<" ";
-    cout<<"██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██╔══██╗██╔════╝ ██║     ██║██╔══██╗"<<endl;
+    cout<<color(LIGHT_BLUE)<<"██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██╔══██╗██╔════╝ ██║     ██║██╔══██╗"<<endl;
     cout<<setw(padding)<<" ";
-    cout<<"██████╔╝███████║   ██║      ██║   ███████║██║  ███╗██║     ██║███████║"<<endl;
+    cout<<color(BLUE)<<"██████╔╝███████║   ██║      ██║   ███████║██║  ███╗██║     ██║███████║"<<endl;
     cout<<setw(padding)<<" ";
-    cout<<"██╔══██╗██╔══██║   ██║      ██║   ██╔══██║██║   ██║██║     ██║██╔══██║"<<endl;
+    cout<<color(LIGHT_BLUE)<<"██╔══██╗██╔══██║   ██║      ██║   ██╔══██║██║   ██║██║     ██║██╔══██║"<<endl;
     cout<<setw(padding)<<" ";
-    cout<<"██████╔╝██║  ██║   ██║      ██║   ██║  ██║╚██████╔╝███████╗██║██║  ██║"<<endl;
+    cout<<color(BLUE)<<"██████╔╝██║  ██║   ██║      ██║   ██║  ██║╚██████╔╝███████╗██║██║  ██║"<<endl;
     cout<<setw(padding)<<" ";
-    cout<<"╚═════╝ ╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═╝"<<endl;
+    cout<<color(LIGHT_BLUE)<<"╚═════╝ ╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═╝"<<endl;
     cout<<setw(padding)<<" ";
-    cout<<"         ███╗   ██╗ █████╗ ██╗   ██╗ █████╗ ██╗     ███████╗          "<<endl;
+    cout<<color(BLUE)<<"         ███╗   ██╗ █████╗ ██╗   ██╗ █████╗ ██╗     ███████╗          "<<endl;
     cout<<setw(padding)<<" ";
-    cout<<"         ████╗  ██║██╔══██╗██║   ██║██╔══██╗██║     ██╔════╝          "<<endl;
+    cout<<color(LIGHT_BLUE)<<"         ████╗  ██║██╔══██╗██║   ██║██╔══██╗██║     ██╔════╝          "<<endl;
     cout<<setw(padding)<<" ";
-    cout<<"         ██╔██╗ ██║███████║██║   ██║███████║██║     █████╗            "<<endl;
+    cout<<color(BLUE)<<"         ██╔██╗ ██║███████║██║   ██║███████║██║     █████╗            "<<endl;
     cout<<setw(padding)<<" ";
-    cout<<"         ██║╚██╗██║██╔══██║╚██╗ ██╔╝██╔══██║██║     ██╔══╝            "<<endl;
+    cout<<color(LIGHT_BLUE)<<"         ██║╚██╗██║██╔══██║╚██╗ ██╔╝██╔══██║██║     ██╔══╝            "<<endl;
     cout<<setw(padding)<<" ";
-    cout<<"         ██║ ╚████║██║  ██║ ╚████╔╝ ██║  ██║███████╗███████╗          "<<endl;
+    cout<<color(BLUE)<<"         ██║ ╚████║██║  ██║ ╚████╔╝ ██║  ██║███████╗███████╗          "<<endl;
     cout<<setw(padding)<<" ";
-    cout<<"         ╚═╝  ╚═══╝╚═╝  ╚═╝  ╚═══╝  ╚═╝  ╚═╝╚══════╝╚══════╝          "<<endl<<endl<<endl;
+    cout<<color(LIGHT_BLUE)<<"         ╚═╝  ╚═══╝╚═╝  ╚═╝  ╚═══╝  ╚═╝  ╚═╝╚══════╝╚══════╝          "<<color(DEFAULT)<<endl<<endl<<endl;
     cout << setw(padding) << " ";
     cout<<"Premi INVIO per continuare...";
     cin.get();
