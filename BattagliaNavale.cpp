@@ -219,7 +219,7 @@ void stampa2(char mappa1[][N], char mappa2[][N], int giocatore)
     cout<<"Mancato: "<<color(BLUE)<<"O"<<color(DEFAULT)<<endl<<endl;
     cout<<"Navi avversario: "<<giocatori[giocatore]<<endl;
     if(giocatori[giocatore-1] <= 4)
-        cout<<"Le ture navi: "<<color(RED)<<giocatori[giocatore-1]<<color(DEFAULT)<<endl;
+        cout<<"Le tue navi: "<<color(RED)<<giocatori[giocatore-1]<<color(DEFAULT)<<endl;
     else
         cout<<"Le tue navi: "<<giocatori[giocatore-1]<<endl;
     cout<<setw(padding)<<" ";
@@ -441,29 +441,31 @@ void checkNave(char mappa[][N], int x, int y)
     }
 }
 
-string affondato(char mappa[][N],int giocatore) //int giocatore=0 / 1
+string affondato(char mappa[][N], int giocatore) //int giocatore=0 / 1
 {
-    // contrlAff = [0]-> xInizio [1]-> yInizio [2]-> xFine [3]-> yFine
-    bool naveAffondata=true;
-    if (contlAff[0] == contlAff[2] && contlAff[1] == contlAff[3])
-        naveAffondata = true;
-    if(naveAffondata)
-        for (int i=contlAff[0]; i <= contlAff[2]; i++)
-        {
-            for (int j=contlAff[1]; j <= contlAff[3]; j++)
+    bool naveAffondata = true;
+    if (contlAff[0] == contlAff[2] && contlAff[1] == contlAff[3]) // nave da 1
+        naveAffondata = mappa[contlAff[0]][contlAff[1]] == 'X' ? false : true;
+    else 
+    { // nave con più di 1 cella
+        for (int i = contlAff[0]; i <= contlAff[2]; i++) {
+            for (int j = contlAff[1]; j <= contlAff[3]; j++) 
             {
-                if (mappa[i][j] == 'X')
-                    naveAffondata=true;
-                if (mappa[i][j] == '*')
+                if (mappa[i][j] == 'X') 
+                    naveAffondata = true;
+                if (mappa[i][j] == '*') 
                 {
                     naveAffondata = false;
                     break;
                 }
             }
+            if (!naveAffondata) 
+                break;
         }
-    if(naveAffondata == true)
+    }
+    if (naveAffondata) 
     {
-        giocatori[giocatore]=giocatori[giocatore]-1;
+        giocatori[giocatore] -= 1;
         cout<<setw(padding)<<" ";
         return "affondata!\n";
     }
@@ -496,13 +498,13 @@ bool controlloAtt(char mappa[][N], int x, int y)
     if(mappa[x][y] == 'X')
     {
         cout<<setw(padding)<<" ";
-        cout<<" Hai gia colpito in questo punto"<<endl;
+        cout<<color(RED)<<" Hai gia colpito in questo punto"<<color(DEFAULT)<<endl;
         return true;
     }
-    else if(mappa[x][y] == 'O')
+    else(mappa[x][y] == 'O');
     {
         cout<<setw(padding)<<" ";
-        cout<<" Hai gia colpito in questo punto"<<endl;
+        cout<<color(RED)<<" Hai gia colpito in questo punto"<<color(DEFAULT)<<endl;
         return true;
     }
     return false;
@@ -680,7 +682,7 @@ void difficile(char difesa1[][N], char attacco1[][N], char difesa2[][N], char at
         cout << setw(padding) << " ";
         cout<<"Piazzamento navi:"<<endl;
         cout << setw(padding) << " ";
-        cout<<"1. manuale"<<endl;
+        cout<<"1. manuale"<<endl;<<color(DEFAULT)
         cout << setw(padding) << " ";
         cout<<"2. casuale"<<endl;
         cout << setw(padding) << " ";
